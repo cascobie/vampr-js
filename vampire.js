@@ -35,27 +35,34 @@ class Vampire {
   isMoreSeniorThan(vampire) {
     return this.numberOfVampiresFromOriginal < vampire.numberOfVampiresFromOriginal;
   }
-  
-  /** Stretch **/
 
-  // Returns the closest common ancestor of two vampires.
-  // The closest common anscestor should be the more senior vampire if a direct ancestor is used.
-  // For example:
-  // * when comparing Ansel and Sarah, Ansel is the closest common anscestor.
-  // * when comparing Ansel and Andrew, Ansel is the closest common anscestor.
-  closestCommonAncestor(vampire) {
+  //** Tree traversal methods **/-----------------------------------------------------------------------------------------------------
 
-  }
-  
-  //--------------DEPTH FIRST TRAVERSAL------------------------------------------------------------
   // Returns the vampire object with that name, or null if no vampire exists with that name
   vampireWithName(name) {
-
+    if (this.name === name) {
+      return this;
+    }
+    for (const vampire of this.offspring) {
+      const nameLookUp = vampire.vampireWithName(name);
+      if (nameLookUp) {
+        return nameLookUp;
+      }
+    }
+    return null;
   }
 
   // Returns the total number of vampires that exist
   get totalDescendents() {
+    let totalDescendents = 0;
 
+    for (const descendent of this.offspring) {
+      totalDescendents += 1;
+      const descendents = descendent.totalDescendents
+      totalDescendents = totalDescendents + descendents;
+    }
+    
+    return totalDescendents;
   }
 
   // Returns an array of all the vampires that were converted after 1980
@@ -73,8 +80,8 @@ class Vampire {
 
     return vampires;
   }
+  }
 
-}
 
 module.exports = Vampire;
 
